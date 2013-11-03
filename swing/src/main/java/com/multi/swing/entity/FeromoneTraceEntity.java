@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class HormoneTraceEntity implements Observer, Entity {
+public class FeromoneTraceEntity implements Observer, Entity {
 
-	private List<HormoneEntity> trace = new ArrayList<>();
+	private List<FeromoneEntity> trace = new ArrayList<>();
 
 	@Override
 	public void update(Observable observable, Object observableArgument) {
 	}
 
 	public void extendTrace(Point position) {
-		trace.add(new HormoneEntity(position));
+		trace.add(new FeromoneEntity(position));
 	}
 
-	public List<HormoneEntity> getHormones() {
+	public List<FeromoneEntity> getFeromones() {
 		return trace;
 	}
 }

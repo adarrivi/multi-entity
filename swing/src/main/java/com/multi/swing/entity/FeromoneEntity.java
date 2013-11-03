@@ -2,12 +2,12 @@ package com.multi.swing.entity;
 
 import java.awt.Point;
 
-public class HormoneEntity implements Entity {
+public class FeromoneEntity implements Entity {
 
 	private float intensity = 1;
 	private final Point position;
 
-	public HormoneEntity(Point position) {
+	public FeromoneEntity(Point position) {
 		this.position = new Point(position);
 	}
 

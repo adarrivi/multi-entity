@@ -9,8 +9,8 @@ public class Images {
 	public static final Image ANT = new ImageIcon(
 			Images.class.getResource("/img/ant.png")).getImage();
 
-	public static final Image GREEN_HORMONE = new ImageIcon(
-			Images.class.getResource("/img/greenHormone2.png")).getImage();
+	public static final Image GREEN_FEROMONE = new ImageIcon(
+			Images.class.getResource("/img/greenFeromone20x20.png")).getImage();
 
 	private static Images INSTANCE = new Images();
 

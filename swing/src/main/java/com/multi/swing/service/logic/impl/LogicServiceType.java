@@ -2,15 +2,15 @@ package com.multi.swing.service.logic.impl;
 
 import com.multi.swing.entity.AntEntity;
 import com.multi.swing.entity.Entity;
-import com.multi.swing.entity.HormoneTraceEntity;
+import com.multi.swing.entity.FeromoneTraceEntity;
 import com.multi.swing.exception.ConfigurationException;
 import com.multi.swing.service.logic.LogicEntityService;
 
 public enum LogicServiceType {
 
 	ANT(AntEntity.class, AntLogicServiceDefaultImpl.class), //
-	HORMONE_TRACE(HormoneTraceEntity.class,
-			HormoneTraceLogicServiceDefaultImpl.class);
+	FEROMONE_TRACE(FeromoneTraceEntity.class,
+			FeromoneTraceLogicServiceDefaultImpl.class);
 
 	private Class<? extends Entity> entityClass;
 	private Class<? extends LogicEntityService<? extends Entity>> serviceClass;

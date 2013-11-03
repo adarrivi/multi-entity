@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -22,24 +23,46 @@ public class StepController {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(StepController.class);
+	private static final long FPS_25_NANO = TimeUnit.MILLISECONDS.toNanos(60);
 	private List<Entity> entities = new ArrayList<>();
+
+	@Value("${msPerFrame}")
+	private int msPerFrame;
 
 	@Autowired
 	private Terrain terrain;
+
+	private long elapsedTimeNano;
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@Async
 	public void start() {
+		long currentTime = System.nanoTime();
+		if (elapsedTimeNano != 0) {
+			sleepIfTooFast();
+		}
+		elapsedTimeNano = currentTime;
 		run();
 	}
 
+	private void sleepIfTooFast() {
+		long currentTime = System.nanoTime();
+		long nanosPerFrame = TimeUnit.MILLISECONDS.toNanos(msPerFrame);
+		long toSleepMs = TimeUnit.NANOSECONDS.toMillis(nanosPerFrame
+				- (currentTime - elapsedTimeNano));
+		if (toSleepMs > 0) {
+			try {
+				Thread.sleep(toSleepMs);
+			} catch (InterruptedException e) {
+				// Nothing to do
+			}
+		}
+	}
+
 	private void run() {
-		long nanoTime = System.nanoTime();
 		stepEntities();
-		LOG.debug("Took {}ms. to process logic",
-				TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - nanoTime));
 		terrain.repaint();
 	}
 

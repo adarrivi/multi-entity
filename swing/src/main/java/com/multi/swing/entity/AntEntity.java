@@ -1,26 +1,21 @@
 package com.multi.swing.entity;
 
 import java.awt.Point;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 
-public class AntEntity implements Observer, Entity {
+public class AntEntity implements Entity {
 
 	private static final Random RANDOM = new Random();
 
 	private Point position;
 	private double rotation = RANDOM.nextDouble() * 2 * Math.PI;
+	private double steps;
 
-	private HormoneTraceEntity trace;
+	private FeromoneTraceEntity trace;
 
-	public AntEntity(Point position, HormoneTraceEntity trace) {
+	public AntEntity(Point position, FeromoneTraceEntity trace) {
 		this.trace = trace;
 		this.position = position;
-	}
-
-	@Override
-	public void update(Observable observable, Object observableArgument) {
 	}
 
 	public Point getPosition() {
@@ -35,6 +30,17 @@ public class AntEntity implements Observer, Entity {
 		this.rotation += rotationDelta;
 	}
 
+	public void increaseStep() {
+		steps++;
+		if (steps == Double.MAX_VALUE) {
+			steps = 0;
+		}
+	}
+
+	public double getSteps() {
+		return steps;
+	}
+
 	public void extendTrace() {
 		trace.extendTrace(position);
 	}
@@ -43,7 +49,7 @@ public class AntEntity implements Observer, Entity {
 		return rotation;
 	}
 
-	public HormoneTraceEntity getTrace() {
+	public FeromoneTraceEntity getTrace() {
 		return trace;
 	}
 

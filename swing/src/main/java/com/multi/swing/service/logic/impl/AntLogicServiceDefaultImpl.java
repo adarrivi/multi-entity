@@ -12,6 +12,7 @@ import com.multi.swing.service.logic.LogicEntityService;
 @Service
 class AntLogicServiceDefaultImpl implements LogicEntityService<AntEntity> {
 
+	private static final int MARK_EACH_STEPS = 5;
 	private static final double ROTATION_DELTA = 0.1;
 	private static final int FORWARD_STEP = 5;
 	private static final Random RANDOM = new Random();
@@ -35,23 +36,40 @@ class AntLogicServiceDefaultImpl implements LogicEntityService<AntEntity> {
 	}
 
 	private void moveForward(AntEntity ant) {
-		ant.extendTrace();
+		extendTrace(ant);
+		Point nextPosition = getNextPosition(ant);
+
+		if (isPositionOutOfBounds(nextPosition)) {
+			turnAround(ant);
+			return;
+		}
+		ant.setPosition(nextPosition);
+		ant.increaseStep();
+	}
+
+	private void extendTrace(AntEntity ant) {
+		if (ant.getSteps() % MARK_EACH_STEPS == 0) {
+			ant.extendTrace();
+		}
+	}
+
+	private Point getNextPosition(AntEntity ant) {
 		Point position = new Point(ant.getPosition());
 		double rotation = ant.getRotation();
 		position.y -= Double.valueOf(Math.cos(rotation) * FORWARD_STEP)
 				.intValue();
 		position.x += Double.valueOf(Math.sin(rotation) * FORWARD_STEP)
 				.intValue();
-
-		if (!isWithinRange(position.x, width)
-				|| !isWithinRange(position.y, height)) {
-			turnAround(ant);
-		}
-		ant.setPosition(position);
+		return position;
 	}
 
-	private boolean isWithinRange(int value, int upperLimit) {
-		return value >= 0 && value <= upperLimit;
+	private boolean isPositionOutOfBounds(Point position) {
+		return isOutOfRange(position.x, width)
+				|| isOutOfRange(position.y, height);
+	}
+
+	private boolean isOutOfRange(int value, int upperLimit) {
+		return value < 0 || value > upperLimit;
 	}
 
 	private void turnAround(AntEntity ant) {

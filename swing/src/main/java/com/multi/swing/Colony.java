@@ -21,11 +21,11 @@ import com.multi.swing.controller.logic.StepController;
 import com.multi.swing.controller.view.GraphicsController;
 import com.multi.swing.entity.AntEntity;
 import com.multi.swing.entity.Entity;
-import com.multi.swing.entity.HormoneTraceEntity;
+import com.multi.swing.entity.FeromoneTraceEntity;
 
 @Component
 public class Colony extends JFrame implements Runnable {
-	private static final int ANT_ENTITIES = 100;
+	private static final int ANT_ENTITIES = 10;
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOG = LoggerFactory.getLogger(Colony.class);
 
@@ -72,7 +72,7 @@ public class Colony extends JFrame implements Runnable {
 
 		Random random = new Random();
 		for (int i = 0; i < ANT_ENTITIES; i++) {
-			HormoneTraceEntity trace = new HormoneTraceEntity();
+			FeromoneTraceEntity trace = new FeromoneTraceEntity();
 			AntEntity ant = new AntEntity(
 					new Point(random.nextInt(terrainWidth),
 							random.nextInt(terrainHeight)), trace);
