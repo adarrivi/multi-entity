@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.entity.PositionEntity;
 import com.multi.swing.util.RandomUtils;
 
@@ -13,7 +13,7 @@ public class AntEntity implements PositionEntity {
 	private Point position;
 	private double rotation = RandomUtils.getIntance().getRandomRotation();
 	private double steps;
-	private List<FeromoneEntity> trace = new ArrayList<>();
+	private List<PheromoneEntity> trace = new ArrayList<>();
 	private AntState state;
 
 	public AntEntity(Point position, AntState state) {
@@ -49,15 +49,15 @@ public class AntEntity implements PositionEntity {
 		return rotation;
 	}
 
-	public List<FeromoneEntity> getTrace() {
+	public List<PheromoneEntity> getTrace() {
 		return trace;
 	}
 
 	public void updateTrace() {
-		List<FeromoneEntity> toRemove = new ArrayList<>();
-		for (FeromoneEntity feromone : trace) {
-			if (feromone.hasDissapeared()) {
-				toRemove.add(feromone);
+		List<PheromoneEntity> toRemove = new ArrayList<>();
+		for (PheromoneEntity pheromone : trace) {
+			if (pheromone.hasDissapeared()) {
+				toRemove.add(pheromone);
 			}
 		}
 		trace.removeAll(toRemove);

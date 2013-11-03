@@ -1,6 +1,6 @@
 package com.multi.swing.entity;
 
-public enum FeromonType {
+public enum PheromonType {
 
 	EXPLORE, FOOD_FOUND;
 

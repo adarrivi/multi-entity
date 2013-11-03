@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import org.springframework.stereotype.Component;
 
-import com.multi.swing.entity.FeromonType;
+import com.multi.swing.entity.PheromonType;
 
 @Component
 class ImageCache {
@@ -17,10 +17,10 @@ class ImageCache {
 	public final Image ANT = new ImageIcon(getClass().getResource(
 			"/img/ant.png")).getImage();
 
-	public final Image GREEN_FEROMONE = new ImageIcon(getClass().getResource(
-			"/img/greenFeromone20x20.png")).getImage();
-	public final Image BROWN_FEROMONE = new ImageIcon(getClass().getResource(
-			"/img/brownFeromone20x20.png")).getImage();
+	public final Image GREEN_PHEROMONE = new ImageIcon(getClass().getResource(
+			"/img/greenPheromone20x20.png")).getImage();
+	public final Image BROWN_PHEROMONE = new ImageIcon(getClass().getResource(
+			"/img/brownPheromone20x20.png")).getImage();
 
 	public final Image NEST = new ImageIcon(getClass().getResource(
 			"/img/nest.png")).getImage();
@@ -36,10 +36,10 @@ class ImageCache {
 		}
 	}
 
-	public Image getFeromoneImage(FeromonType type) {
-		if (FeromonType.EXPLORE.equals(type)) {
-			return GREEN_FEROMONE;
+	public Image getPheromoneImage(PheromonType type) {
+		if (PheromonType.EXPLORE.equals(type)) {
+			return GREEN_PHEROMONE;
 		}
-		return BROWN_FEROMONE;
+		return BROWN_PHEROMONE;
 	}
 }

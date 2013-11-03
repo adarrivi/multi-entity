@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.controller.logic.EntitiesController;
-import com.multi.swing.entity.FeromonType;
-import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.PheromonType;
+import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.util.RandomUtils;
 
 @Component("foodFoundState")
@@ -77,10 +77,10 @@ public class FoodFoundState implements AntState {
 	private void updateTrace(AntEntity ant) {
 		ant.updateTrace();
 		if (ant.getSteps() % MARK_EACH_STEPS == 0) {
-			FeromoneEntity feromoneEntity = new FeromoneEntity(
-					ant.getPosition(), FeromonType.FOOD_FOUND);
-			ant.getTrace().add(feromoneEntity);
-			entitiesController.addEntity(feromoneEntity);
+			PheromoneEntity pheromoneEntity = new PheromoneEntity(
+					ant.getPosition(), PheromonType.FOOD_FOUND);
+			ant.getTrace().add(pheromoneEntity);
+			entitiesController.addEntity(pheromoneEntity);
 		}
 	}
 

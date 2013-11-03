@@ -1,7 +1,7 @@
 package com.multi.swing.service.logic.impl;
 
 import com.multi.swing.entity.PositionEntity;
-import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.entity.FoodEntity;
 import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.ant.AntEntity;
@@ -12,7 +12,7 @@ public enum LogicServiceType {
 
 	ANT(AntEntity.class, AntLogicServiceDefaultImpl.class), //
 	NET(NestEntity.class, NestLogicServiceDefaultImpl.class), //
-	FEROMONE(FeromoneEntity.class, FeromoneLogicServiceDefaultImpl.class), //
+	PHEROMONE(PheromoneEntity.class, PheromoneLogicServiceDefaultImpl.class), //
 	FOOD(FoodEntity.class, FoodLogicServiceDefaultImpl.class);
 
 	private Class<? extends PositionEntity> entityClass;

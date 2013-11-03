@@ -1,7 +1,7 @@
 package com.multi.swing.service.view.impl;
 
 import com.multi.swing.entity.PositionEntity;
-import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.entity.FoodEntity;
 import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.ant.AntEntity;
@@ -13,7 +13,7 @@ public enum ViewServiceType {
 	ANT(AntEntity.class, AntViewSerivceDefaultImpl.class), //
 	NEST(NestEntity.class, NestViewSerivceDefaultImpl.class), //
 	FOOD(FoodEntity.class, FoodViewSerivceDefaultImpl.class), //
-	FEROMONE(FeromoneEntity.class, FeromoneViewSerivceDefaultImpl.class);
+	PHEROMONE(PheromoneEntity.class, PheromoneViewSerivceDefaultImpl.class);
 
 	private Class<? extends PositionEntity> entityClass;
 	private Class<? extends ViewEntityService<? extends PositionEntity>> serviceClass;

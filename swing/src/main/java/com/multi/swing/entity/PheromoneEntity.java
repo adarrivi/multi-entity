@@ -2,13 +2,13 @@ package com.multi.swing.entity;
 
 import java.awt.Point;
 
-public class FeromoneEntity implements PositionEntity {
+public class PheromoneEntity implements PositionEntity {
 
 	private float intensity = 1;
 	private final Point position;
-	private FeromonType type;
+	private PheromonType type;
 
-	public FeromoneEntity(Point position, FeromonType type) {
+	public PheromoneEntity(Point position, PheromonType type) {
 		this.position = new Point(position);
 		this.type = type;
 	}
@@ -30,7 +30,7 @@ public class FeromoneEntity implements PositionEntity {
 		return position;
 	}
 
-	public FeromonType getType() {
+	public PheromonType getType() {
 		return type;
 	}
 }
