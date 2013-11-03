@@ -1,20 +1,32 @@
 package com.multi.swing.step;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-@Component
-public class StepController extends Observable {
+import com.multi.swing.Terrain;
+import com.multi.swing.entity.Entity;
+import com.multi.swing.service.logic.LogicEntityService;
+import com.multi.swing.service.logic.impl.LogicServiceType;
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(StepController.class);
+@Component
+public class StepController {
+
+	private static final int RE_PROCESS_DELAY_MS = 50;
+
 	private StepControllerStatus status = StepControllerStatus.STOPPED;
+	private List<Entity> entities = new ArrayList<>();
+
+	@Autowired
+	private Terrain terrain;
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	@Async
 	public void start() {
@@ -24,23 +36,33 @@ public class StepController extends Observable {
 
 	private void run() {
 		while (StepControllerStatus.RUNNING.equals(status)) {
-			setChanged();
-			LOG.debug("Notifying observers with thread {}",
-					Thread.currentThread());
-			notifyObservers();
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			stepEntities();
+			terrain.repaint();
+			sleep();
 		}
 	}
 
-	public void addAllObservers(Collection<? extends Observer> entities) {
-		for (Observer observer : entities) {
-			addObserver(observer);
+	private void stepEntities() {
+		for (Entity entity : entities) {
+			Class<LogicEntityService<Entity>> logicServiceClass = LogicServiceType
+					.getServiceClassByEntityClass(entity.getClass());
+			LogicEntityService<Entity> logicService = applicationContext
+					.getBean(logicServiceClass);
+			logicService.stepEntity(entity);
 		}
+	}
+
+	private void sleep() {
+		try {
+			Thread.sleep(RE_PROCESS_DELAY_MS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void addAllEntities(Collection<Entity> entitiesToAdd) {
+		entities.addAll(entitiesToAdd);
 	}
 
 	public void stop() {

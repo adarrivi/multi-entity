@@ -3,11 +3,10 @@ package com.multi.swing;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +18,14 @@ import org.springframework.stereotype.Component;
 
 import com.multi.swing.config.SpringApplicationContext;
 import com.multi.swing.entity.AntEntity;
+import com.multi.swing.entity.Entity;
 import com.multi.swing.entity.HormoneTraceEntity;
-import com.multi.swing.entity.Terrain;
 import com.multi.swing.step.StepController;
 import com.multi.swing.view.GraphicsController;
 
 @Component
-public class Colony extends JFrame {
+public class Colony extends JFrame implements Runnable {
+	private static final int ANT_ENTITIES = 100;
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOG = LoggerFactory.getLogger(Colony.class);
 
@@ -34,6 +34,11 @@ public class Colony extends JFrame {
 	@Value("${frame.width}")
 	private int width;
 
+	@Value("${terrain.height}")
+	private int terrainHeight;
+	@Value("${terrain.width}")
+	private int terrainWidth;
+
 	@Autowired
 	private Terrain terrain;
 	@Autowired
@@ -41,7 +46,7 @@ public class Colony extends JFrame {
 	@Autowired
 	private GraphicsController graphicsController;
 
-	private List<Observer> entities = new ArrayList<>();
+	private List<Entity> entities = new ArrayList<>();
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
@@ -49,6 +54,8 @@ public class Colony extends JFrame {
 				SpringApplicationContext.class);
 		applicationContext.registerShutdownHook();
 		LOG.debug("Application context loaded");
+		Colony colony = applicationContext.getBean(Colony.class);
+		SwingUtilities.invokeLater(colony);
 	}
 
 	protected Colony() {
@@ -58,22 +65,24 @@ public class Colony extends JFrame {
 		setVisible(true);
 	}
 
-	@PostConstruct
-	private void initialize() {
+	@Override
+	public void run() {
 		centerFrame();
 		add(terrain);
 
 		Random random = new Random();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < ANT_ENTITIES; i++) {
 			HormoneTraceEntity trace = new HormoneTraceEntity();
-			AntEntity ant = new AntEntity(new Point(random.nextInt(width),
-					random.nextInt(height)), trace);
+			AntEntity ant = new AntEntity(
+					new Point(random.nextInt(terrainWidth),
+							random.nextInt(terrainHeight)), trace);
 			entities.add(trace);
 			entities.add(ant);
 		}
-		graphicsController.addAllObservers(entities);
-		stepController.addAllObservers(entities);
-		stepController.addObserver(terrain);
+
+		graphicsController.addAllEntities(entities);
+		stepController.addAllEntities(entities);
+
 		LOG.debug("Main thread {}", Thread.currentThread());
 		stepController.start();
 	}
