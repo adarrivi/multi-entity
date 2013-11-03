@@ -3,6 +3,7 @@ package com.multi.swing;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
@@ -17,8 +18,9 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.config.SpringApplicationContext;
-import com.multi.swing.entity.Terrain;
 import com.multi.swing.entity.AntEntity;
+import com.multi.swing.entity.HormoneTraceEntity;
+import com.multi.swing.entity.Terrain;
 import com.multi.swing.step.StepController;
 import com.multi.swing.view.GraphicsController;
 
@@ -39,7 +41,7 @@ public class Colony extends JFrame {
 	@Autowired
 	private GraphicsController graphicsController;
 
-	private List<AntEntity> entities = new ArrayList<>();
+	private List<Observer> entities = new ArrayList<>();
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
@@ -62,13 +64,17 @@ public class Colony extends JFrame {
 		add(terrain);
 
 		Random random = new Random();
-		for (int i = 0; i < 50; i++) {
-			entities.add(new AntEntity(new Point(random.nextInt(width),
-					random.nextInt(height))));
+		for (int i = 0; i < 1000; i++) {
+			HormoneTraceEntity trace = new HormoneTraceEntity();
+			AntEntity ant = new AntEntity(new Point(random.nextInt(width),
+					random.nextInt(height)), trace);
+			entities.add(trace);
+			entities.add(ant);
 		}
 		graphicsController.addAllObservers(entities);
 		stepController.addAllObservers(entities);
 		stepController.addObserver(terrain);
+		LOG.debug("Main thread {}", Thread.currentThread());
 		stepController.start();
 	}
 
