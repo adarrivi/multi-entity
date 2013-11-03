@@ -6,10 +6,10 @@ import java.awt.geom.AffineTransform;
 
 import org.springframework.stereotype.Service;
 
+import com.multi.swing.controller.view.DrawUtils;
+import com.multi.swing.controller.view.Images;
 import com.multi.swing.entity.AntEntity;
 import com.multi.swing.service.view.ViewEntityService;
-import com.multi.swing.view.DrawUtils;
-import com.multi.swing.view.Images;
 
 @Service
 class AntViewSerivceDefaultImpl implements ViewEntityService<AntEntity> {
@@ -22,6 +22,8 @@ class AntViewSerivceDefaultImpl implements ViewEntityService<AntEntity> {
 				ant.getRotation(), position.x, position.y);
 		graphics2d.setTransform(rotator);
 		DrawUtils.getInstance().drawImage(Images.ANT, position, graphics2d);
+		// graphics2d.setColor(Color.BLUE);
+		// graphics2d.drawRect(position.x, position.y, 20, 20);
 		graphics2d.setTransform(oldTransform);
 
 	}

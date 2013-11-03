@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 
 import org.springframework.stereotype.Service;
 
+import com.multi.swing.controller.view.DrawUtils;
+import com.multi.swing.controller.view.Images;
 import com.multi.swing.entity.HormoneEntity;
 import com.multi.swing.service.view.ViewEntityService;
-import com.multi.swing.view.DrawUtils;
-import com.multi.swing.view.Images;
 
 @Service("hormoneViewSerivceDefaultImpl")
 class HormoneViewSerivceDefaultImpl implements ViewEntityService<HormoneEntity> {
@@ -21,6 +21,9 @@ class HormoneViewSerivceDefaultImpl implements ViewEntityService<HormoneEntity> 
 		Composite comp = AlphaComposite.getInstance(rule,
 				hormone.getIntensity());
 		graphics2d.setComposite(comp);
+		// graphics2d.setColor(Color.GREEN);
+		// graphics2d.drawRect(hormone.getPosition().x, hormone.getPosition().y,
+		// 5, 5);
 		DrawUtils.getInstance().drawImage(Images.GREEN_HORMONE,
 				hormone.getPosition(), graphics2d);
 		graphics2d.setComposite(oldComposite);

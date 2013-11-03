@@ -1,4 +1,4 @@
-package com.multi.swing.view;
+package com.multi.swing.controller.view;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;

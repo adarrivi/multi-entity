@@ -55,7 +55,7 @@ class AntLogicServiceDefaultImpl implements LogicEntityService<AntEntity> {
 	}
 
 	private void turnAround(AntEntity ant) {
-		ant.increaseRotation(Math.PI / 2);
+		ant.increaseRotation(RANDOM.nextDouble() * (Math.PI / 2));
 
 	}
 }

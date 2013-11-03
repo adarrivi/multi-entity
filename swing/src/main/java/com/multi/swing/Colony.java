@@ -17,11 +17,11 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.config.SpringApplicationContext;
+import com.multi.swing.controller.logic.StepController;
+import com.multi.swing.controller.view.GraphicsController;
 import com.multi.swing.entity.AntEntity;
 import com.multi.swing.entity.Entity;
 import com.multi.swing.entity.HormoneTraceEntity;
-import com.multi.swing.step.StepController;
-import com.multi.swing.view.GraphicsController;
 
 @Component
 public class Colony extends JFrame implements Runnable {
