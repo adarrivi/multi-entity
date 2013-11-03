@@ -1,32 +1,35 @@
 package com.multi.swing.service.view.impl;
 
-import com.multi.swing.entity.AntEntity;
-import com.multi.swing.entity.Entity;
-import com.multi.swing.entity.FeromoneTraceEntity;
+import com.multi.swing.entity.PositionEntity;
+import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.FoodEntity;
+import com.multi.swing.entity.NestEntity;
+import com.multi.swing.entity.ant.AntEntity;
 import com.multi.swing.exception.ConfigurationException;
 import com.multi.swing.service.view.ViewEntityService;
 
 public enum ViewServiceType {
 
 	ANT(AntEntity.class, AntViewSerivceDefaultImpl.class), //
-	FEROMONE_TRACE(FeromoneTraceEntity.class,
-			FeromoneTraceViewSerivceDefaultImpl.class);
+	NEST(NestEntity.class, NestViewSerivceDefaultImpl.class), //
+	FOOD(FoodEntity.class, FoodViewSerivceDefaultImpl.class), //
+	FEROMONE(FeromoneEntity.class, FeromoneViewSerivceDefaultImpl.class);
 
-	private Class<? extends Entity> entityClass;
-	private Class<? extends ViewEntityService<? extends Entity>> serviceClass;
+	private Class<? extends PositionEntity> entityClass;
+	private Class<? extends ViewEntityService<? extends PositionEntity>> serviceClass;
 
-	private <T extends Entity> ViewServiceType(Class<T> entityClass,
+	private <T extends PositionEntity> ViewServiceType(Class<T> entityClass,
 			Class<? extends ViewEntityService<T>> logicServiceClass) {
 		this.entityClass = entityClass;
 		this.serviceClass = logicServiceClass;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Class<ViewEntityService<Entity>> getServiceClassByEntityClass(
-			Class<? extends Entity> entityClass) {
+	public static Class<ViewEntityService<PositionEntity>> getServiceClassByEntityClass(
+			Class<? extends PositionEntity> entityClass) {
 		for (ViewServiceType type : ViewServiceType.values()) {
 			if (type.entityClass.equals(entityClass)) {
-				return (Class<ViewEntityService<Entity>>) type.serviceClass;
+				return (Class<ViewEntityService<PositionEntity>>) type.serviceClass;
 			}
 		}
 		throw new ConfigurationException("Unexpected entity class: "

@@ -1,4 +1,4 @@
-package com.multi.swing.controller.view;
+package com.multi.swing.util;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

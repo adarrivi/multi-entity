@@ -1,9 +1,6 @@
 package com.multi.swing;
 
-import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -17,16 +14,16 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.config.SpringApplicationContext;
+import com.multi.swing.controller.logic.EntitiesController;
 import com.multi.swing.controller.logic.StepController;
 import com.multi.swing.controller.view.GraphicsController;
-import com.multi.swing.entity.AntEntity;
-import com.multi.swing.entity.Entity;
-import com.multi.swing.entity.FeromoneTraceEntity;
+import com.multi.swing.entity.PositionEntity;
+import com.multi.swing.entity.EntityFactory;
 
 @Component
 public class Colony extends JFrame implements Runnable {
-	private static final int ANT_ENTITIES = 10;
 	private static final long serialVersionUID = 1L;
+
 	private static final Logger LOG = LoggerFactory.getLogger(Colony.class);
 
 	@Value("${frame.height}")
@@ -34,10 +31,8 @@ public class Colony extends JFrame implements Runnable {
 	@Value("${frame.width}")
 	private int width;
 
-	@Value("${terrain.height}")
-	private int terrainHeight;
-	@Value("${terrain.width}")
-	private int terrainWidth;
+	@Autowired
+	private EntityFactory entityFactory;
 
 	@Autowired
 	private Terrain terrain;
@@ -45,8 +40,8 @@ public class Colony extends JFrame implements Runnable {
 	private StepController stepController;
 	@Autowired
 	private GraphicsController graphicsController;
-
-	private List<Entity> entities = new ArrayList<>();
+	@Autowired
+	private EntitiesController entitiesController;
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
@@ -69,20 +64,8 @@ public class Colony extends JFrame implements Runnable {
 	public void run() {
 		centerFrame();
 		add(terrain);
-
-		Random random = new Random();
-		for (int i = 0; i < ANT_ENTITIES; i++) {
-			FeromoneTraceEntity trace = new FeromoneTraceEntity();
-			AntEntity ant = new AntEntity(
-					new Point(random.nextInt(terrainWidth),
-							random.nextInt(terrainHeight)), trace);
-			entities.add(trace);
-			entities.add(ant);
-		}
-
-		graphicsController.addAllEntities(entities);
-		stepController.addAllEntities(entities);
-
+		List<PositionEntity> entities = entityFactory.createAntColony();
+		entitiesController.addAllEntities(entities);
 		LOG.debug("Main thread {}", Thread.currentThread());
 		stepController.start();
 	}

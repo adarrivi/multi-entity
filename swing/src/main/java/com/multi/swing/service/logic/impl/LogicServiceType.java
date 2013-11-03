@@ -1,32 +1,35 @@
 package com.multi.swing.service.logic.impl;
 
-import com.multi.swing.entity.AntEntity;
-import com.multi.swing.entity.Entity;
-import com.multi.swing.entity.FeromoneTraceEntity;
+import com.multi.swing.entity.PositionEntity;
+import com.multi.swing.entity.FeromoneEntity;
+import com.multi.swing.entity.FoodEntity;
+import com.multi.swing.entity.NestEntity;
+import com.multi.swing.entity.ant.AntEntity;
 import com.multi.swing.exception.ConfigurationException;
 import com.multi.swing.service.logic.LogicEntityService;
 
 public enum LogicServiceType {
 
 	ANT(AntEntity.class, AntLogicServiceDefaultImpl.class), //
-	FEROMONE_TRACE(FeromoneTraceEntity.class,
-			FeromoneTraceLogicServiceDefaultImpl.class);
+	NET(NestEntity.class, NestLogicServiceDefaultImpl.class), //
+	FEROMONE(FeromoneEntity.class, FeromoneLogicServiceDefaultImpl.class), //
+	FOOD(FoodEntity.class, FoodLogicServiceDefaultImpl.class);
 
-	private Class<? extends Entity> entityClass;
-	private Class<? extends LogicEntityService<? extends Entity>> serviceClass;
+	private Class<? extends PositionEntity> entityClass;
+	private Class<? extends LogicEntityService<? extends PositionEntity>> serviceClass;
 
-	private <T extends Entity> LogicServiceType(Class<T> entityClass,
+	private <T extends PositionEntity> LogicServiceType(Class<T> entityClass,
 			Class<? extends LogicEntityService<T>> logicServiceClass) {
 		this.entityClass = entityClass;
 		this.serviceClass = logicServiceClass;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Class<LogicEntityService<Entity>> getServiceClassByEntityClass(
-			Class<? extends Entity> entityClass) {
+	public static Class<LogicEntityService<PositionEntity>> getServiceClassByEntityClass(
+			Class<? extends PositionEntity> entityClass) {
 		for (LogicServiceType type : LogicServiceType.values()) {
 			if (type.entityClass.equals(entityClass)) {
-				return (Class<LogicEntityService<Entity>>) type.serviceClass;
+				return (Class<LogicEntityService<PositionEntity>>) type.serviceClass;
 			}
 		}
 		throw new ConfigurationException("Unexpected entity class: "

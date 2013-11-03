@@ -1,43 +1,38 @@
 package com.multi.swing.controller.logic;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.Terrain;
-import com.multi.swing.entity.Entity;
+import com.multi.swing.entity.PositionEntity;
 import com.multi.swing.service.logic.LogicEntityService;
 import com.multi.swing.service.logic.impl.LogicServiceType;
 
 @Component
 public class StepController {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(StepController.class);
-	private static final long FPS_25_NANO = TimeUnit.MILLISECONDS.toNanos(60);
-	private List<Entity> entities = new ArrayList<>();
+	private double steps;
 
-	@Value("${msPerFrame}")
+	@Value("${frame.msPerFrame}")
 	private int msPerFrame;
+
+	@Value("${frame.skipFrames}")
+	private int skipFrames;
 
 	@Autowired
 	private Terrain terrain;
+	@Autowired
+	private EntitiesController entitiesController;
 
 	private long elapsedTimeNano;
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	@Async
 	public void start() {
 		long currentTime = System.nanoTime();
 		if (elapsedTimeNano != 0) {
@@ -62,22 +57,22 @@ public class StepController {
 	}
 
 	private void run() {
+		steps++;
 		stepEntities();
-		terrain.repaint();
+		if (skipFrames == 0 || steps % skipFrames == 0) {
+			terrain.repaint();
+		} else {
+			start();
+		}
 	}
 
 	private void stepEntities() {
-		for (Entity entity : entities) {
-			Class<LogicEntityService<Entity>> logicServiceClass = LogicServiceType
+		for (PositionEntity entity : entitiesController.getAllEntities()) {
+			Class<LogicEntityService<PositionEntity>> logicServiceClass = LogicServiceType
 					.getServiceClassByEntityClass(entity.getClass());
-			LogicEntityService<Entity> logicService = applicationContext
+			LogicEntityService<PositionEntity> logicService = applicationContext
 					.getBean(logicServiceClass);
 			logicService.stepEntity(entity);
 		}
 	}
-
-	public void addAllEntities(Collection<Entity> entitiesToAdd) {
-		entities.addAll(entitiesToAdd);
-	}
-
 }
