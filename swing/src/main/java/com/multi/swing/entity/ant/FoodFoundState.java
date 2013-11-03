@@ -3,19 +3,19 @@ package com.multi.swing.entity.ant;
 import java.awt.Point;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.controller.logic.EntitiesController;
+import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.PheromonType;
 import com.multi.swing.entity.PheromoneEntity;
-import com.multi.swing.util.RandomUtils;
 
 @Component("foodFoundState")
 public class FoodFoundState implements AntState {
 
 	private static final int MARK_EACH_STEPS = 5;
-	private static final double ROTATION_DELTA = 0.1;
 	private static final int FORWARD_STEP = 5;
 
 	@Value("${terrain.height}")
@@ -26,27 +26,32 @@ public class FoodFoundState implements AntState {
 	@Autowired
 	private EntitiesController entitiesController;
 
+	@Autowired
+	@Qualifier("searchFoodState")
+	private AntState searchFoodState;
+
 	@Override
 	public void doAction(AntEntity ant) {
-		rotateAntRandomly(ant);
+		rotateToNest(ant);
 		moveForward(ant);
 		updateTrace(ant);
 	}
 
-	private void rotateAntRandomly(AntEntity ant) {
-		boolean rotateClockWise = RandomUtils.getIntance().getBoolean();
-		double rotationDelta = rotateClockWise ? ROTATION_DELTA
-				: -ROTATION_DELTA;
-		ant.increaseRotation(rotationDelta);
+	private void rotateToNest(AntEntity ant) {
+		NestEntity nest = entitiesController.getNest();
+		double distance = nest.getPosition().distance(ant.getPosition());
+
+		double sin = (nest.getPosition().x - ant.getPosition().x) / distance;
+		double rotation = Math.asin(sin);
+
+		if (nest.getPosition().y > ant.getPosition().y) {
+			rotation = Math.toRadians(180) - rotation;
+		}
+		ant.setRotation(rotation);
 	}
 
 	private void moveForward(AntEntity ant) {
 		Point nextPosition = getNextPosition(ant);
-
-		if (isPositionOutOfBounds(nextPosition)) {
-			turnAround(ant);
-			return;
-		}
 		ant.setPosition(nextPosition);
 		ant.increaseStep();
 	}
@@ -61,19 +66,6 @@ public class FoodFoundState implements AntState {
 		return position;
 	}
 
-	private boolean isPositionOutOfBounds(Point position) {
-		return isOutOfRange(position.x, width)
-				|| isOutOfRange(position.y, height);
-	}
-
-	private boolean isOutOfRange(int value, int upperLimit) {
-		return value < 0 || value > upperLimit;
-	}
-
-	private void turnAround(AntEntity ant) {
-		ant.increaseRotation(RandomUtils.getIntance().getDouble(Math.PI / 2));
-	}
-
 	private void updateTrace(AntEntity ant) {
 		ant.updateTrace();
 		if (ant.getSteps() % MARK_EACH_STEPS == 0) {
@@ -86,6 +78,10 @@ public class FoodFoundState implements AntState {
 
 	@Override
 	public AntState getNextState(AntEntity ant) {
+		if (entitiesController.getNest().getPosition()
+				.distance(ant.getPosition()) < 20) {
+			return searchFoodState;
+		}
 		return this;
 	}
 

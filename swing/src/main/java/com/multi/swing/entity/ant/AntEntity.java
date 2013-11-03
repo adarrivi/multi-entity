@@ -71,4 +71,8 @@ public class AntEntity implements PositionEntity {
 		this.state = state;
 	}
 
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
+	}
+
 }

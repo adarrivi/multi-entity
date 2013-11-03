@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Iterables;
+import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.PositionEntity;
 
 @Component
@@ -70,6 +71,11 @@ public class EntitiesController {
 			allEntities.addAll(entitiesList);
 		}
 		return allEntities;
+	}
+
+	public NestEntity getNest() {
+		return (NestEntity) Iterables.getFirst(entityMap.get(NestEntity.class),
+				null);
 	}
 
 }

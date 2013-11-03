@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.multi.swing.controller.logic.EntitiesController;
+import com.multi.swing.entity.FoodEntity;
 import com.multi.swing.entity.PheromonType;
 import com.multi.swing.entity.PheromoneEntity;
-import com.multi.swing.entity.FoodEntity;
-import com.multi.swing.entity.PositionEntity;
 import com.multi.swing.util.RandomUtils;
 
 @Component("searchFoodState")
@@ -91,14 +90,15 @@ public class SearchFoodState implements AntState {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public AntState getNextState(AntEntity ant) {
-		List<? extends PositionEntity> entitiesInPosition = entitiesController
+		List<FoodEntity> foodInPositionList = (List<FoodEntity>) entitiesController
 				.getEntitiesInPosition(FoodEntity.class, ant.getPosition(), 20);
-		if (entitiesInPosition.isEmpty()) {
+		if (foodInPositionList.isEmpty() || foodInPositionList.get(0).isEmpty()) {
 			return this;
 		}
+		foodInPositionList.get(0).decreaseAmount();
 		return foodFoundState;
 	}
-
 }
