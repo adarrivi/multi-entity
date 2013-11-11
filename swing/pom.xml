@@ -47,6 +47,19 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt-main</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+
 		<!-- Testing dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -67,7 +80,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>pascal-triangle</finalName>
 		<plugins>
@@ -86,7 +99,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- To download library sources for Eclipse -->
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -106,6 +119,7 @@
 					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

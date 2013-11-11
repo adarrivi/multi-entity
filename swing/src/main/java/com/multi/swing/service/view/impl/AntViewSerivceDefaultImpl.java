@@ -24,9 +24,9 @@ class AntViewSerivceDefaultImpl implements ViewEntityService<AntEntity> {
 		AffineTransform rotator = AffineTransform.getRotateInstance(
 				ant.getRotation(), position.x, position.y);
 		graphics2d.setTransform(rotator);
-		DrawUtils.getInstance().drawImage(imageCache.ANT, position, graphics2d);
-		// graphics2d.setColor(Color.BLUE);
-		// graphics2d.drawRect(position.x, position.y, 20, 20);
+		DrawUtils.getInstance().drawImage(
+				imageCache.getAntStateImage(ant.getState().getClass(), ant
+						.getState().getStateIndex()), position, graphics2d);
 		graphics2d.setTransform(oldTransform);
 
 	}

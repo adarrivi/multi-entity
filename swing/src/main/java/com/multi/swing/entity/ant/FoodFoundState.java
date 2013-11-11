@@ -23,6 +23,8 @@ public class FoodFoundState implements AntState {
 	@Value("${terrain.width}")
 	private int width;
 
+	private int imageStateIndex = 0;
+
 	@Autowired
 	private EntitiesController entitiesController;
 
@@ -35,10 +37,11 @@ public class FoodFoundState implements AntState {
 		rotateToNest(ant);
 		moveForward(ant);
 		updateTrace(ant);
+		imageStateIndex = (imageStateIndex + 1) % 1;
 	}
 
 	private void rotateToNest(AntEntity ant) {
-		NestEntity nest = entitiesController.getNest();
+		NestEntity nest = ant.getNest();
 		double distance = nest.getPosition().distance(ant.getPosition());
 
 		double sin = (nest.getPosition().x - ant.getPosition().x) / distance;
@@ -78,11 +81,15 @@ public class FoodFoundState implements AntState {
 
 	@Override
 	public AntState getNextState(AntEntity ant) {
-		if (entitiesController.getNest().getPosition()
-				.distance(ant.getPosition()) < 20) {
+		if (ant.getNest().getPosition().distance(ant.getPosition()) < 20) {
 			return searchFoodState;
 		}
 		return this;
+	}
+
+	@Override
+	public int getStateIndex() {
+		return imageStateIndex;
 	}
 
 }

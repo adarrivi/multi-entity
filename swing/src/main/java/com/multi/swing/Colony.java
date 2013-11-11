@@ -64,7 +64,7 @@ public class Colony extends JFrame implements Runnable {
 	public void run() {
 		centerFrame();
 		add(terrain);
-		List<PositionEntity> entities = entityFactory.createAntColony();
+		List<PositionEntity> entities = entityFactory.createEcosystem();
 		entitiesController.addAllEntities(entities);
 		LOG.debug("Main thread {}", Thread.currentThread());
 		stepController.start();

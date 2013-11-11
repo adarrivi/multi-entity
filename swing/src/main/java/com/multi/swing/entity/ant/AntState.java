@@ -6,4 +6,6 @@ public interface AntState {
 
 	AntState getNextState(AntEntity ant);
 
+	int getStateIndex();
+
 }

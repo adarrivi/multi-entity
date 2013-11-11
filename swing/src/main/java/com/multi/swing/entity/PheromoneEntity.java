@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class PheromoneEntity implements PositionEntity {
 
-	private float intensity = 1;
+	private float intensity = 0.5f;
 	private final Point position;
 	private PheromonType type;
 

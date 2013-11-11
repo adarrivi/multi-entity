@@ -11,7 +11,7 @@ import com.multi.swing.service.logic.LogicEntityService;
 class PheromoneLogicServiceDefaultImpl implements
 		LogicEntityService<PheromoneEntity> {
 
-	private static final float FAINT_DELTA = -0.01f;
+	private static final float FAINT_DELTA = -0.005f;
 
 	@Autowired
 	private EntitiesController entitiesController;

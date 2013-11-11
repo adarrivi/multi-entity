@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.entity.PositionEntity;
 import com.multi.swing.util.RandomUtils;
@@ -15,10 +16,12 @@ public class AntEntity implements PositionEntity {
 	private double steps;
 	private List<PheromoneEntity> trace = new ArrayList<>();
 	private AntState state;
+	private NestEntity nest;
 
-	public AntEntity(Point position, AntState state) {
+	public AntEntity(Point position, AntState state, NestEntity nest) {
 		this.position = new Point(position);
 		this.state = state;
+		this.nest = nest;
 	}
 
 	@Override
@@ -73,6 +76,10 @@ public class AntEntity implements PositionEntity {
 
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
+	}
+
+	public NestEntity getNest() {
+		return nest;
 	}
 
 }

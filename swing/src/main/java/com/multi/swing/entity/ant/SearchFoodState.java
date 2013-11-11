@@ -26,6 +26,8 @@ public class SearchFoodState implements AntState {
 	@Value("${terrain.width}")
 	private int width;
 
+	private int imageStateIndex = 0;
+
 	@Autowired
 	private EntitiesController entitiesController;
 	@Autowired
@@ -37,6 +39,7 @@ public class SearchFoodState implements AntState {
 		rotateAntRandomly(ant);
 		moveForward(ant);
 		updateTrace(ant);
+		imageStateIndex = (imageStateIndex + 1) % 1;
 	}
 
 	private void rotateAntRandomly(AntEntity ant) {
@@ -100,5 +103,10 @@ public class SearchFoodState implements AntState {
 		}
 		foodInPositionList.get(0).decreaseAmount();
 		return foodFoundState;
+	}
+
+	@Override
+	public int getStateIndex() {
+		return imageStateIndex;
 	}
 }
