@@ -1,11 +1,11 @@
 package com.multi.swing.service.view.impl;
 
+import com.multi.framework.exception.ConfigurationException;
 import com.multi.swing.entity.PositionEntity;
 import com.multi.swing.entity.PheromoneEntity;
 import com.multi.swing.entity.FoodEntity;
 import com.multi.swing.entity.NestEntity;
 import com.multi.swing.entity.ant.AntEntity;
-import com.multi.swing.exception.ConfigurationException;
 import com.multi.swing.service.view.ViewEntityService;
 
 public enum ViewServiceType {

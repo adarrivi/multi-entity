@@ -1,4 +1,4 @@
-package com.multi.swing.exception;
+package com.multi.framework.exception;
 
 public class ConfigurationException extends RuntimeException {
 

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@ComponentScan("com.multi.swing")
+@ComponentScan("com.multi")
 @PropertySource("classpath:app.properties")
 public class SpringApplicationContext {
 
