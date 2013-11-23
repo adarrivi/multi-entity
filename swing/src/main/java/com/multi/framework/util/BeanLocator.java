@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.multi.framework.container.AttributeType;
+import com.multi.framework.domain.entity.Entity;
 import com.multi.framework.exception.ConfigurationException;
 import com.multi.framework.service.AttributeService;
-import com.multi.framework.service.EntityAttributeServiceType;
 
 @Component
 public class BeanLocator {
@@ -23,7 +24,7 @@ public class BeanLocator {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public <T extends AttributeService> T getServiceImplFromInterface(
+	public <T extends AttributeService<Entity>> T getServiceImplFromInterface(
 			Class<T> interfaceBeanClass) {
 		Map<String, T> serviceBeans = applicationContext
 				.getBeansOfType(interfaceBeanClass);
@@ -32,7 +33,7 @@ public class BeanLocator {
 				serviceBeans.entrySet());
 	}
 
-	private <T extends AttributeService> void validateServiceConfiguration(
+	private <T extends AttributeService<Entity>> void validateServiceConfiguration(
 			Map<String, T> servicetBeans,
 			Class<? extends T> interfaceServiceClass) {
 		if (servicetBeans.isEmpty()) {
@@ -49,7 +50,7 @@ public class BeanLocator {
 		}
 	}
 
-	private <T extends AttributeService> T getOverridenOrDefaultBean(
+	private <T extends AttributeService<Entity>> T getOverridenOrDefaultBean(
 			Class<T> interfaceServiceClass,
 			Set<Entry<String, T>> serviceEntrySet) {
 		if (serviceEntrySet.size() == 1) {
@@ -59,8 +60,8 @@ public class BeanLocator {
 		}
 		for (Entry<String, T> entry : serviceEntrySet) {
 			T bean = entry.getValue();
-			if (!EntityAttributeServiceType.isDefaultImplementation(
-					interfaceServiceClass, bean.getClass())) {
+			if (!AttributeType.isDefaultImplementation(interfaceServiceClass,
+					bean.getClass())) {
 				LOG.debug("Found custom implementation for {}: {}",
 						interfaceServiceClass.getName(), bean.getClass()
 								.getName());

@@ -25,4 +25,8 @@ public class DrawUtils {
 		graphics2d.drawImage(image, center.x, center.y, null);
 	}
 
+	public void drawDot(Point position, Graphics2D graphics2d) {
+		graphics2d.drawLine(position.x, position.y, position.x + 1, position.y);
+	}
+
 }

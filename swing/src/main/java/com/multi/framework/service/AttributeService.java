@@ -1,5 +1,7 @@
 package com.multi.framework.service;
 
-public interface AttributeService {
+import com.multi.framework.domain.entity.Entity;
+
+public interface AttributeService<E extends Entity> {
 
 }

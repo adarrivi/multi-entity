@@ -15,7 +15,7 @@ import com.multi.swing.entity.ant.FoodFoundState;
 import com.multi.swing.entity.ant.SearchFoodState;
 
 @Component
-class ImageCache {
+public class ImageCache {
 
 	private final static int FOOD_SIZE = 9;
 	private final static int ANT_SEARCH_FOOD_SIZE = 2;
