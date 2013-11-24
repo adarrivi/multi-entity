@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.Collection;
 import java.util.Observer;
 
 import javax.annotation.PostConstruct;
@@ -23,55 +24,62 @@ import com.multi.swing.util.DrawUtils;
 
 @Component
 public class Sandbox extends JPanel implements ViewController {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Value("${terrain.height}")
-	private int height;
-	@Value("${terrain.width}")
-	private int width;
+    @Value("${terrain.height}")
+    private int height;
+    @Value("${terrain.width}")
+    private int width;
 
-	@Autowired
-	private ImageCache imageCache;
-	@Autowired
-	private EntitiesContiner entitiesContiner;
-	@Autowired
-	private LogicController logicController;
+    @Autowired
+    private ImageCache imageCache;
+    @Autowired
+    private EntitiesContiner entitiesContiner;
+    @Autowired
+    private LogicController logicController;
 
-	private Observer observer;
+    private Observer observer;
 
-	@PostConstruct
-	private void initialize() {
-		setBackground(Color.GRAY);
-		setDoubleBuffered(true);
-		setSize(width, height);
-	}
+    @PostConstruct
+    private void initialize() {
+        setBackground(Color.GRAY);
+        setDoubleBuffered(true);
+        setSize(width, height);
+    }
 
-	@Override
-	public void paint(Graphics graphics) {
-		super.paint(graphics);
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        drawDisplay(graphics);
+        for (InternalEntity internalEntity : entitiesContiner.getAllEntities()) {
+            if (internalEntity.getCurrentPosition() != null) {
+                Position2d currentPosition = internalEntity.getCurrentPosition();
+                Point position = new Point((int) currentPosition.getX(), (int) currentPosition.getY());
+                // DrawUtils.getInstance().drawImage(imageCache.getAntStateImage(SearchFoodState.class,
+                // 0), position, (Graphics2D) graphics);
+                DrawUtils.getInstance().drawDot(position, (Graphics2D) graphics);
+            }
+        }
 
-		for (InternalEntity internalEntity : entitiesContiner.getAllEntities()) {
-			Position2d currentPosition = internalEntity.getCurrentPosition();
-			Point position = new Point((int) currentPosition.getX(),
-					(int) currentPosition.getY());
-			// DrawUtils.getInstance().drawImage(
-			// imageCache.getAntStateImage(SearchFoodState.class, 0),
-			// position, (Graphics2D) graphics);
-			DrawUtils.getInstance().drawDot(position, (Graphics2D) graphics);
-		}
+        Toolkit.getDefaultToolkit().sync();
+        graphics.dispose();
+        observer.update(null, null);
+    }
 
-		Toolkit.getDefaultToolkit().sync();
-		graphics.dispose();
-		observer.update(null, null);
-	}
+    private void drawDisplay(Graphics graphics) {
+        Collection<InternalEntity> allEntities = entitiesContiner.getAllEntities();
+        graphics.setColor(Color.BLACK);
+        graphics.drawString(Integer.toString(allEntities.size()), 10, 10);
+        graphics.setColor(Color.BLACK);
+    }
 
-	@Override
-	public void draw() {
-		repaint();
-	}
+    @Override
+    public void draw() {
+        repaint();
+    }
 
-	@Override
-	public void addObserver(Observer o) {
-		observer = o;
-	}
+    @Override
+    public void addObserver(Observer o) {
+        observer = o;
+    }
 }

@@ -1,5 +1,7 @@
 package com.multi.framework.example;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +11,16 @@ import com.multi.swing.util.RandomUtils;
 @Service
 public class DogMoveService implements MoveService<Dog, Position2d> {
 
-	private static final double ROTATION_DELTA = 0.01;
+	private static final double ROTATION_DELTA = 0.05;
 	private static final int FORWARD_STEP = 5;
+
+	private static Position2d INIT = new Position2d();
+
+	@PostConstruct
+	private void init() {
+		INIT.setX(RandomUtils.getIntance().getDouble(width));
+		INIT.setY(RandomUtils.getIntance().getDouble(height));
+	}
 
 	@Value("${terrain.height}")
 	private int height;
@@ -21,6 +31,10 @@ public class DogMoveService implements MoveService<Dog, Position2d> {
 	public Position2d move(Dog entity, Position2d currentPosition) {
 		if (currentPosition == null) {
 			currentPosition = new Position2d();
+			currentPosition.setRotation(RandomUtils.getIntance().getDouble(
+					Math.PI * 2));
+			currentPosition.setX(INIT.getX());
+			currentPosition.setY(INIT.getY());
 		}
 		rotateAntRandomly(currentPosition);
 		moveForward(currentPosition);

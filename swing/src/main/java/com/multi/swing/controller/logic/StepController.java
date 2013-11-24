@@ -17,7 +17,7 @@ public class StepController {
 
 	private double steps;
 
-	@Value("${frame.msPerFrame}")
+	@Value("${frame.minMillisPerFrame}")
 	private int msPerFrame;
 
 	@Value("${frame.skipFrames}")
